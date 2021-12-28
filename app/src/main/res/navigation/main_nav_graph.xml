@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/timerFragment">
+
+    <fragment
+        android:id="@+id/timerFragment"
+        android:name="com.example.quited.ui.timer.TimerFragment"
+        android:label="fragment_timer"
+        tools:layout="@layout/fragment_timer" >
+        <action
+            android:id="@+id/action_timerFragment_to_statsFragment"
+            app:destination="@id/statsFragment"
+            app:enterAnim="@anim/right_to_left"
+            app:exitAnim="@anim/exit_to_left" />
+        <action
+            android:id="@+id/action_timerFragment_to_planSettingsFragment"
+            app:destination="@id/planSettingsFragment"
+            app:enterAnim="@anim/left_to_right"
+            app:exitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/planSettingsFragment"
+        android:name="com.example.quited.ui.settings.PlanSettingsFragment"
+        android:label="fragment_plan_settings"
+        tools:layout="@layout/fragment_plan_settings" >
+        <action
+            android:id="@+id/action_planSettingsFragment_to_timerFragment"
+            app:destination="@id/timerFragment"
+            app:enterAnim="@anim/right_to_left"
+            app:exitAnim="@anim/exit_to_left" />
+        <action
+            android:id="@+id/action_planSettingsFragment_to_statsFragment"
+            app:destination="@id/statsFragment"
+            app:enterAnim="@anim/right_to_left"
+            app:exitAnim="@anim/exit_to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.example.quited.ui.stats.StatsFragment"
+        android:label="fragment_stats"
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_timerFragment"
+            app:destination="@id/timerFragment"
+            app:enterAnim="@anim/left_to_right"
+            app:exitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_statsFragment_to_planSettingsFragment"
+            app:destination="@id/planSettingsFragment"
+            app:enterAnim="@anim/left_to_right"
+            app:exitAnim="@anim/exit_to_right" />
+    </fragment>
+</navigation>
