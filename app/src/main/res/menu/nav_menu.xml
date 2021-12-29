@@ -4,7 +4,7 @@
         android:id="@+id/planSettingsFragment"
         android:enabled="true"
         android:icon="@drawable/profile_icon"
-        android:title="@string/settings"/>
+        android:title="@string/plan"/>
     <item
         android:id="@+id/timerFragment"
         android:enabled="true"

@@ -17,6 +17,7 @@
     <string name="day_number">Day %s</string>
     <string name="ciggs">%s/%s</string>
     <string name="plan">Plan</string>
+    <string name="real">Real</string>
     <string name="no_plan">No plan</string>
     <string name="today">Today</string>
     <string name="cigg_saved">Smoking saved</string>

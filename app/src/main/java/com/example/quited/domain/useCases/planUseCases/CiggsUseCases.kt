@@ -8,6 +8,6 @@ data class CiggsUseCases(
         val getPlan: GetPlanUseCase = GetPlanUseCase(CiggsRepositoryImpl()),
         val getCiggsAmountByDay: GetCiggsAmountByDayUseCase = GetCiggsAmountByDayUseCase(CiggsRepositoryImpl()),
         val getCiggsAmountByDaysAfter: GetCiggsAmountByDaysAfterUseCase = GetCiggsAmountByDaysAfterUseCase(CiggsRepositoryImpl()),
-        val getCountdownUseCase: GetCountdownUseCase = GetCountdownUseCase(CiggsRepositoryImpl())
-) {
-}
+        val getLastCiggUseCase: GetLastCiggUseCase = GetLastCiggUseCase(CiggsRepositoryImpl()),
+        val getTimeUseCase: GetTimeUseCase = GetTimeUseCase()
+)

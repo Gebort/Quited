@@ -8,7 +8,6 @@ import com.example.quited.domain.useCases.planUseCases.CiggsUseCases
 import com.example.quited.presentation.util.Date
 import com.example.quited.presentation.util.Duration
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -28,13 +27,14 @@ class TimerViewModel: ViewModel() {
     private var planJob: Job? = null
     private var statJob: Job? = null
     private var timeJob: Job? = null
+    private var dayJob: Job? = null
     private var lastCiggJob: Job? = null
 
     init {
         getPlan()
     }
 
-    fun getPlan(){
+    private fun getPlan(){
         planJob?.cancel()
         planJob = viewModelScope.launch {
             _state.value = state.value.copy(
@@ -52,19 +52,25 @@ class TimerViewModel: ViewModel() {
         }
     }
 
-    fun getStat(plan: Plan?){
+    private fun getStat(plan: Plan?){
         statJob?.cancel()
         statJob = viewModelScope.launch {
-            ciggsUseCases.getCiggsAmountByDay(plan, state.value.dayStat.date).collect {  dayStat ->
+            ciggsUseCases.getCiggsAmountByDay(plan, Date.fromUTC(System.currentTimeMillis())).collect {  dayStat ->
                 _state.value = state.value.copy(
                         dayStat = dayStat
                 )
                 if (plan != null) {
+                    val date = state.value.dayStat.date
                     if (dayStat.ciggsAmount < dayStat.maxAmount) {
-                        //Задержка с последней сигареты
-                        setLastCiggDelay()
+                        if (date.timeLong < plan.endTime.timeLong) {
+                            if (date.timeLong > plan.startTime.timeLong){
+                                //Задержка с последней сигареты
+                                setLastCiggDelay()
+                            }
+                        }
+
                     } else {
-                        //Задержка до следующего дня
+                        //Задержка до следующего дняра
                         setNextDayDelay()
                     }
                 }
@@ -72,14 +78,14 @@ class TimerViewModel: ViewModel() {
         }
     }
 
-    fun setLastCiggDelay() {
+    private fun setLastCiggDelay() {
         lastCiggJob?.cancel()
         lastCiggJob = viewModelScope.launch {
-            val lastTime = ciggsUseCases.getCountdownUseCase() ?: 0L
+            val lastTime = ciggsUseCases.getLastCiggUseCase() ?: 0L
             plan?.let {
                 val now = Date.fromUTC(System.currentTimeMillis())
-                val delay = now.dateLong + now.timeLong - lastTime
-                val planDelay = plan!!.getTimeDelay(Date.fromUTC(System.currentTimeMillis()))
+                val delay = now.datestamp - lastTime
+                val planDelay = plan!!.getTimeDelay(now)
                 _state.value = state.value.copy(
                         maxDuration = Duration.fromLocal(planDelay)
                 )
@@ -89,37 +95,43 @@ class TimerViewModel: ViewModel() {
         }
     }
 
-    fun setNextDayDelay() {
+    private fun setNextDayDelay() {
         lastCiggJob?.cancel()
         lastCiggJob = viewModelScope.launch {
-            val lastTime = ciggsUseCases.getCountdownUseCase() ?: 0L
-            val tomorrow = Date.fromUTC(System.currentTimeMillis()).plusDays(1).dateLong + plan!!.startTime.timeLong
+            val lastTime = ciggsUseCases.getLastCiggUseCase() ?: 0L
             val now = Date.fromUTC(System.currentTimeMillis())
+            val tomorrow =
+                    if (now.timeLong > plan!!.startTime.timeLong) now.plusDays(1).dateLong + plan!!.startTime.timeLong
+                    else now.dateLong + plan!!.startTime.timeLong
             _state.value = state.value.copy(
                     maxDuration = Duration.fromLocal(tomorrow - lastTime)
                     )
-            setTimer(tomorrow - now.timeLong - now.dateLong)
+            setTimer(tomorrow - now.datestamp)
         }
     }
 
-    fun setTimer(delay: Long) {
+    private fun setTimer(delay: Long) {
         timeJob?.cancel()
-        timeJob = flow {
-            var count = delay
-            val step = 1000L
-            emit(count)
-            while (count > 0) {
-                delay(step)
-                count -= step
-                emit(count)
+        if (delay == 0L) {
+            _state.value = state.value.copy(
+                    duration = Duration.fromLocal(0)
+            )
+        }
+        else {
+            timeJob = viewModelScope.launch {
+                val endTime = System.currentTimeMillis() + delay
+                ciggsUseCases.getTimeUseCase().collect { timeLong ->
+                    val countdown = if (timeLong >= endTime) 0L else endTime - timeLong
+                    _state.value = state.value.copy(
+                            duration = Duration.fromLocal(countdown)
+                    )
+                    if (countdown == 0L) {
+                        getPlan()
+                        timeJob?.cancel()
+                    }
+                }
             }
         }
-                .onEach { count ->
-                    _state.value = state.value.copy(
-                            duration = Duration.fromLocal(count),
-                    )
-                }
-                .launchIn(viewModelScope)
     }
 
     fun onEvent(event: TimerEvent){

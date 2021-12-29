@@ -26,7 +26,8 @@ data class Date(
         val timeStr  = DateTimeFormatter.ofPattern(TIME_PATTERN).format(dateSnap)
         val dateStr  = DateTimeFormatter.ofPattern(DATE_PATTERN).format(dateSnap)
         val dateLong = LocalDate.of(dateSnap.year, dateSnap.month, dateSnap.dayOfMonth).toEpochDay()*24*60*60*1000
-        val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L
+        //val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L  + dateSnap.second * 1000L  + dateSnap.nano/10L
+        val timeLong = dateSnap.toInstant().toEpochMilli()
         return Date(datestampNew, dateStr, timeStr, dateLong, timeLong, dateSnap)
     }
 
@@ -38,8 +39,9 @@ data class Date(
             val timeStr  = DateTimeFormatter.ofPattern(TIME_PATTERN).format(dateSnap)
             val dateStr  = DateTimeFormatter.ofPattern(DATE_PATTERN).format(dateSnap)
             val dateLong = LocalDate.of(dateSnap.year, dateSnap.month, dateSnap.dayOfMonth).toEpochDay()*24*60*60*1000
-            val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L
-            val datestamp = dateLong + timeLong
+           // val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L + dateSnap.second * 1000L  + dateSnap.nano/10L
+            val datestamp = dateSnap.toInstant().toEpochMilli()
+            val timeLong = datestamp - dateLong
             return Date(datestamp, dateStr, timeStr, dateLong, timeLong, dateSnap)
         }
         fun fromLocal(dateLocal: Long): Date {
@@ -48,7 +50,8 @@ data class Date(
             val timeStr  = DateTimeFormatter.ofPattern(TIME_PATTERN).format(dateSnap)
             val dateStr  = DateTimeFormatter.ofPattern(DATE_PATTERN).format(dateSnap)
             val dateLong = LocalDate.of(dateSnap.year, dateSnap.month, dateSnap.dayOfMonth).toEpochDay()*24*60*60*1000
-            val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L
+           // val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L  + dateSnap.second * 1000L  + dateSnap.nano/10L
+            val timeLong = dateLocal - dateLong
             return Date(dateLocal, dateStr, timeStr, dateLong, timeLong, dateSnap)
         }
         fun fromLocalTime(hour: Int, minutes: Int): Date {
@@ -57,7 +60,8 @@ data class Date(
             val timeStr  = DateTimeFormatter.ofPattern(TIME_PATTERN).format(dateSnap)
             val dateStr  = DateTimeFormatter.ofPattern(DATE_PATTERN).format(dateSnap)
             val dateLong = LocalDate.of(dateSnap.year, dateSnap.month, dateSnap.dayOfMonth).toEpochDay()*24*60*60*1000
-            val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L
+           // val timeLong = dateSnap.hour * 60 * 60 * 1000 + dateSnap.minute * 60 * 1000L  + dateSnap.second * 1000L + dateSnap.nano/10L
+            val timeLong = dateSnap.toInstant().toEpochMilli() - dateLong
             return Date(timeLong, dateStr, timeStr, dateLong, timeLong, dateSnap)
         }
     }

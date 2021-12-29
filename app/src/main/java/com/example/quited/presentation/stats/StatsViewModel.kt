@@ -3,6 +3,7 @@ package com.example.quited.presentation.stats
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quited.data.util.MyApp
+import com.example.quited.domain.model.DayStat
 import com.example.quited.domain.model.Plan
 import com.example.quited.domain.useCases.planUseCases.CiggsUseCases
 import com.example.quited.presentation.util.Date
@@ -24,6 +25,7 @@ class StatsViewModel: ViewModel() {
 
     private var planJob: Job? = null
     private var statJob: Job? = null
+    private var dayJob: Job? = null
 
     init {
         getPlan()
