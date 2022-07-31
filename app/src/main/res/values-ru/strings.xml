@@ -1,0 +1,27 @@
+<resources>
+    <string name="end_amount">Желаемое количество</string>
+    <string name="day_end">Конец дня</string>
+    <string name="day_start">Начало дня</string>
+    <string name="days_amount">Количество дней</string>
+    <string name="create_plan">Создать план</string>
+    <string name="timer">Таймер</string>
+    <string name="settings">Настройки</string>
+    <string name="stats">Итог</string>
+    <string name="start_time">Укажите начало дня</string>
+    <string name="start_date">Начало плана</string>
+    <string name="end_time">Укажите конец дня</string>
+    <string name="your_plan">Ваш план</string>
+    <string name="plan_saved">План сохранен</string>
+    <string name="day_number">День %s</string>
+    <string name="ciggs">%s/%s</string>
+    <string name="plan">План</string>
+    <string name="real">Всего</string>
+    <string name="no_plan">Нет плана</string>
+    <string name="today">Сегодня</string>
+    <string name="cigg_saved">Сигарета сохранена</string>
+    <string name="undo">Отмена</string>
+    <string name="you_can_smoke">Можно</string>
+    <string name="start_amount">Сигарет в день</string>
+    <string name="notifications">Уведомления</string>
+
+</resources>

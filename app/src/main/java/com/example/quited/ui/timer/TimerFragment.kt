@@ -1,5 +1,9 @@
 package com.example.quited.ui.timer
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -14,15 +18,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.quited.R
 import com.example.quited.databinding.FragmentTimerBinding
+import com.example.quited.presentation.timer.AlarmBroadcastReceiver
 import com.example.quited.presentation.timer.TimerEvent
 import com.example.quited.presentation.timer.TimerUiEvent
 import com.example.quited.presentation.timer.TimerViewModel
+import com.example.quited.presentation.util.Date
 import com.example.quited.presentation.util.Duration
 import com.example.quited.ui.timer.animation.ProgressBarAnimation
 import com.example.quited.ui.timer.animation.TimeTextAnimation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TimerFragment : Fragment() {
 
@@ -90,6 +97,29 @@ class TimerFragment : Fragment() {
                              params.gravity = Gravity.BOTTOM
                              snackbar.view.layoutParams = params
                              snackbar.show()
+                         }
+                         is TimerUiEvent.Notification -> {
+//                             val alarmManager = activity?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                             val intent = Intent(activity?.applicationContext, AlarmBroadcastReceiver::class.java)
+//                             val pendingIntent = PendingIntent.getBroadcast(activity?.applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+//                             val date = uiEvent.date.toUTC()
+//
+//                             alarmManager.set(
+//                                     AlarmManager.RTC_WAKEUP,
+//                                     date.datestamp,
+//                                     pendingIntent
+//                             )
+                         }
+                         is TimerUiEvent.CancelNotification -> {
+//                             val alarmManager = activity?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                             val intent = Intent(activity?.applicationContext, AlarmBroadcastReceiver::class.java)
+//                             val pendingIntent = PendingIntent.getBroadcast(activity?.applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//
+//
+//                             alarmManager.cancel(
+//                                     pendingIntent
+//                             )
                          }
                     }
                 }

@@ -99,7 +99,7 @@ class StatsFragment : Fragment() {
                 .yAxisTitle("")
                 .yAxisLabelsEnabled(false)
                 .xAxisLabelsEnabled(false)
-                .series(chartData)
+                .series(chartData.toList().toTypedArray())
                 .categories(labels)
 
         binding.aaChartView.aa_drawChartWithChartModel(aaChartModel)

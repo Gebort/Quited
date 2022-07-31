@@ -8,6 +8,7 @@ data class SettingsState(
         val endAmount: Int = 5,
         val startDate: Date = Date.fromUTC(System.currentTimeMillis()),
         val daysAmount: Int = 60,
+        val notifications: Boolean = true,
         val startTime: Date = Date.fromLocalTime(7, 30),
         val endTime: Date = Date.fromLocalTime(23, 0)
 )

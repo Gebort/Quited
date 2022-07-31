@@ -13,7 +13,8 @@ data class PlanDto(
         val startTime: Long,
         val endTime: Long,
         val startAmount: Int,
-        val endAmount: Int
+        val endAmount: Int,
+        val notifications: Boolean
 ){
 
     fun toPlan(): Plan {
@@ -23,7 +24,8 @@ data class PlanDto(
                 startTime = Date.fromLocal(startTime),
                 endTime = Date.fromLocal(endTime),
                 startDate = Date.fromLocal(startDate),
-                endDate = Date.fromLocal(endDate)
+                endDate = Date.fromLocal(endDate),
+                notifications = notifications
         )
     }
 }

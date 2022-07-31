@@ -9,7 +9,8 @@ data class Plan(
     val startTime: Date,
     val endTime: Date,
     val startAmount: Int,
-    val endAmount: Int
+    val endAmount: Int,
+    val notifications: Boolean
 ) {
 
     fun getTimeDelay(date: Date): Long {
@@ -40,7 +41,8 @@ data class Plan(
                 startTime = startTime.timeLong,
                 endTime = endTime.timeLong,
                 startDate = startDate.dateLong,
-                endDate = endDate.dateLong
+                endDate = endDate.dateLong,
+                notifications = notifications
         )
     }
 

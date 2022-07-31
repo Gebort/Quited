@@ -8,7 +8,9 @@ import com.example.quited.domain.useCases.planUseCases.CiggsUseCases
 import com.example.quited.presentation.util.Date
 import com.example.quited.presentation.util.Duration
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TimerViewModel: ViewModel() {
@@ -61,16 +63,15 @@ class TimerViewModel: ViewModel() {
                 )
                 if (plan != null) {
                     val date = state.value.dayStat.date
-                    if (dayStat.ciggsAmount < dayStat.maxAmount) {
-                        if (date.timeLong < plan.endTime.timeLong) {
-                            if (date.timeLong > plan.startTime.timeLong){
+                    if (
+                            dayStat.ciggsAmount < dayStat.maxAmount &&
+                            date.timeLong < plan.endTime.timeLong &&
+                            date.timeLong > plan.startTime.timeLong
+                    ) {
                                 //Задержка с последней сигареты
                                 setLastCiggDelay()
-                            }
-                        }
-
                     } else {
-                        //Задержка до следующего дняра
+                        //Задержка до следующего дня
                         setNextDayDelay()
                     }
                 }
@@ -113,13 +114,22 @@ class TimerViewModel: ViewModel() {
     private fun setTimer(delay: Long) {
         timeJob?.cancel()
         if (delay == 0L) {
-            _state.value = state.value.copy(
-                    duration = Duration.fromLocal(0)
-            )
+            timeJob = viewModelScope.launch {
+                if (plan?.notifications == true) {
+                    _uiEvent.emit(TimerUiEvent.CancelNotification)
+                }
+                _state.value = state.value.copy(
+                        duration = Duration.fromLocal(0)
+                )
+            }
         }
         else {
             timeJob = viewModelScope.launch {
                 val endTime = System.currentTimeMillis() + delay
+                if (plan?.notifications == true){
+                val notificationDate = Date.fromUTC(endTime)
+                _uiEvent.emit(TimerUiEvent.Notification(notificationDate))
+                 }
                 ciggsUseCases.getTimeUseCase().collect { timeLong ->
                     val countdown = if (timeLong >= endTime) 0L else endTime - timeLong
                     _state.value = state.value.copy(

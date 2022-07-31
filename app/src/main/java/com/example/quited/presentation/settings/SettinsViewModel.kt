@@ -44,7 +44,8 @@ class SettinsViewModel: ViewModel() {
                             startTime = plan.startTime,
                             endTime = plan.endTime,
                             startAmount = plan.startAmount,
-                            endAmount = plan.endAmount
+                            endAmount = plan.endAmount,
+                            notifications = plan.notifications
                     )
                 }
                 else {
@@ -66,7 +67,8 @@ class SettinsViewModel: ViewModel() {
                     startDate = state.value.startDate,
                     startTime = state.value.startTime,
                     endTime = state.value.endTime,
-                    endDate = endDate
+                    endDate = endDate,
+                    notifications = state.value.notifications
             )
             planUseCases.setPlan(plan)
 
@@ -107,6 +109,11 @@ class SettinsViewModel: ViewModel() {
                 is SettingsEvent.EnteredEndTime -> {
                     _state.value = state.value.copy(
                             endTime = event.endTime
+                    )
+                }
+                is SettingsEvent.SwitchNotification -> {
+                    _state.value = state.value.copy(
+                            notifications = !state.value.notifications
                     )
                 }
                 is SettingsEvent.Save -> {

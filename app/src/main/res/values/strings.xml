@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Quited</string>
-    <string name="start_amount">Cigarettes per day</string>
+    <string name="app_name" translatable="false">Quited</string>
     <string name="end_amount">Desired amount per day</string>
     <string name="day_end">Day end</string>
     <string name="day_start">Day start</string>
@@ -23,5 +22,8 @@
     <string name="cigg_saved">Smoking saved</string>
     <string name="undo">Undo</string>
     <string name="you_can_smoke">You can</string>
+    <string name="start_amount">Cigarettes per day</string>
+    <string name="notifications">Notifications</string>
+    <string name="smoke_time_1" translatable="false">Tic tac mf</string>
 
 </resources>

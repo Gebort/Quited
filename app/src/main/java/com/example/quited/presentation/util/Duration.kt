@@ -24,7 +24,6 @@ data class Duration(
             } catch(e: DateTimeParseException){
                 LocalTime.of(0, 0)
             }
-            //val timeLong = time.hour*60*60*1000L + time.minute*60*1000L + time.second*1000L
             val dateTime = LocalDateTime.of(1970, 1, 1, time.hour, time.minute, time.second, time.nano)
             val timeLong = dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
             return Duration(timeLong, string, time)

@@ -9,5 +9,6 @@ sealed class SettingsEvent{
     data class EnteredDaysAmount (val daysAmount: Int): SettingsEvent()
     data class EnteredStartTime (val startTime: Date): SettingsEvent()
     data class EnteredEndTime (val endTime: Date): SettingsEvent()
+    object SwitchNotification: SettingsEvent()
     object Save: SettingsEvent()
 }

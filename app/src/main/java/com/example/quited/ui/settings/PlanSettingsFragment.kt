@@ -52,6 +52,10 @@ class PlanSettingsFragment : Fragment() {
             model.onEvent(SettingsEvent.Save)
         }
 
+        binding.notificationsSwitch.setOnClickListener {
+            model.onEvent(SettingsEvent.SwitchNotification)
+        }
+
         binding.amountInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -196,6 +200,8 @@ class PlanSettingsFragment : Fragment() {
                         binding.amountInput.setText(state.startAmount.toString())
                     }
 
+                    binding.notificationsSwitch.isChecked = state.notifications
+
                     binding.progressBar.isVisible = state.loading
                     binding.saveFab.isEnabled = !state.loading
                     binding.amountInput.isEnabled = !state.loading
@@ -204,6 +210,7 @@ class PlanSettingsFragment : Fragment() {
                     binding.startTimeInput.isEnabled = !state.loading
                     binding.reduceToInput.isEnabled = !state.loading
                     binding.startDateInput.isEnabled = !state.loading
+                    binding.notificationsSwitch.isEnabled = !state.loading
                 }
             }
         }
